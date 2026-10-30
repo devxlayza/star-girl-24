@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #fff7e1;
+  --color-paper: #f3ebdd;
+  --color-wine: #790c12;
+  --color-scarlet: #b71f1f;
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-script: "Mrs Saint Delafield", cursive;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+body { overflow-x: clip; }
+
+/* Ritmo de espaçamento e escala tipográfica (fluidos, mobile primeiro) */
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12; }
+  .section { @apply py-16 sm:py-24 lg:py-32; }
+  .h-display { font-family: var(--font-display); line-height: 0.92; font-size: clamp(2.75rem, 10.5vw, 7rem); }
+  .h-script { font-family: var(--font-script); line-height: 1; font-size: clamp(2.75rem, 9vw, 5rem); }
+}
+body {
+  background: var(--color-cream);
+  color: var(--color-scarlet);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--color-wine); color: var(--color-cream); }
+:focus-visible { outline: 2px solid var(--color-scarlet); outline-offset: 3px; }
+
+/* Entrada das letras do hero (único momento orquestrado) */
+@keyframes rise {
+  from { transform: translateY(110%) rotate(4deg); opacity: 0; }
+  to   { transform: translateY(0) rotate(0); opacity: 1; }
+}
+.letter { display: inline-block; animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* Revelação ao rolar */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* Efeitos ligados ao scroll (--sy = pixels rolados, definido no App) */
+.parallax { transform: translate3d(0, calc(var(--sy, 0) * 0.18px), 0); }
+.drift    { transform: translate3d(calc(var(--sy, 0) * -0.35px), 0, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .letter { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .parallax, .drift { transform: none; }
+}
